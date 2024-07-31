@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pruefers",
+  "info": {
+    "singularName": "pruefer",
+    "pluralName": "pruefers",
+    "displayName": "Prüfer",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Vorname": {
+      "type": "string",
+      "required": true
+    },
+    "Nachname": {
+      "type": "string",
+      "required": true
+    },
+    "Titel": {
+      "type": "string"
+    },
+    "Verfuegbar": {
+      "type": "boolean",
+      "required": true
+    }
+  }
+}
