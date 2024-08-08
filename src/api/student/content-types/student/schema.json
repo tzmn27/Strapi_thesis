@@ -21,11 +21,9 @@
       "required": true
     },
     "Matrikelnummer": {
-      "type": "integer",
+      "type": "biginteger",
       "unique": true,
-      "required": true,
-      "min": 1000000,
-      "max": 9999999
+      "required": true
     },
     "Strasse": {
       "type": "string",

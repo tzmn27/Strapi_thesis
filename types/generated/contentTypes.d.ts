@@ -836,16 +836,9 @@ export interface ApiStudentStudent extends Schema.CollectionType {
   attributes: {
     Vorname: Attribute.String & Attribute.Required;
     Nachname: Attribute.String & Attribute.Required;
-    Matrikelnummer: Attribute.Integer &
+    Matrikelnummer: Attribute.BigInteger &
       Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMax<
-        {
-          min: 1000000;
-          max: 9999999;
-        },
-        number
-      >;
+      Attribute.Unique;
     Strasse: Attribute.String & Attribute.Required;
     Mail: Attribute.Email & Attribute.Required;
     Studiengang: Attribute.Enumeration<
