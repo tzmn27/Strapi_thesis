@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Studienabschluss": {
+    "studienabschluss": {
       "type": "enumeration",
       "enum": [
         "Bachelor",
@@ -20,30 +20,39 @@
       ],
       "required": true
     },
-    "Titel": {
+    "titel": {
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
-    "Pruefer": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::pruefer.pruefer"
-    },
-    "Startdatum": {
+    "startdatum": {
       "type": "date",
       "required": true
     },
-    "Beantragungsdatum": {
+    "beantragungsdatum": {
       "type": "date",
       "required": true
     },
-    "Zulassung": {
+    "zulassung": {
       "type": "boolean"
     },
-    "Student": {
+    "extern": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::student.student"
+      "relation": "manyToOne",
+      "target": "api::extern.extern",
+      "inversedBy": "theses"
+    },
+    "pruefer": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::pruefer.pruefer",
+      "mappedBy": "thesis"
+    },
+    "student": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::student.student",
+      "inversedBy": "thesis"
     }
   }
 }

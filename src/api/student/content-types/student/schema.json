@@ -12,28 +12,31 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Vorname": {
+    "vorname": {
       "type": "string",
       "required": true
     },
-    "Nachname": {
+    "nachname": {
       "type": "string",
       "required": true
     },
-    "Matrikelnummer": {
-      "type": "biginteger",
+    "matrikelnummer": {
+      "type": "integer",
       "unique": true,
-      "required": true
+      "required": true,
+      "max": 9999999,
+      "min": 1000000
     },
-    "Strasse": {
+    "strasse": {
       "type": "string",
       "required": true
     },
-    "Mail": {
+    "email": {
       "type": "email",
-      "required": true
+      "required": true,
+      "unique": true
     },
-    "Studiengang": {
+    "studiengang": {
       "type": "enumeration",
       "enum": [
         "Bahningenieurwesen",
@@ -42,15 +45,25 @@
         "Wirtschaftsmathematik"
       ]
     },
-    "PLZ": {
+    "plz": {
       "type": "integer",
       "min": 1067,
       "max": 99998,
       "required": true
     },
-    "User": {
+    "user": {
       "type": "string",
       "unique": true,
+      "required": true
+    },
+    "thesis": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::thesis.thesis",
+      "mappedBy": "student"
+    },
+    "ort": {
+      "type": "string",
       "required": true
     }
   }

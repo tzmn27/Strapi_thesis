@@ -788,6 +788,69 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiExternExtern extends Schema.CollectionType {
+  collectionName: 'externs';
+  info: {
+    singularName: 'extern';
+    pluralName: 'externs';
+    displayName: 'Extern';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    vorname: Attribute.String & Attribute.Required;
+    nachname: Attribute.String & Attribute.Required;
+    email: Attribute.Email & Attribute.Required & Attribute.Unique;
+    telefon: Attribute.BigInteger &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetMinMax<
+        {
+          max: '999999999999999';
+        },
+        string
+      >;
+    hochschulname: Attribute.String & Attribute.Required;
+    abschlussjahr: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 1920;
+          max: 2019;
+        },
+        number
+      >;
+    fachgebiet: Attribute.String & Attribute.Required;
+    akademischerGrad: Attribute.Enumeration<
+      ['Bachelor', 'Master', 'Doktor', 'Diplom', 'Magister']
+    > &
+      Attribute.Required;
+    berufserfahrung: Attribute.Text & Attribute.Required;
+    theses: Attribute.Relation<
+      'api::extern.extern',
+      'oneToMany',
+      'api::thesis.thesis'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::extern.extern',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::extern.extern',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPrueferPruefer extends Schema.CollectionType {
   collectionName: 'pruefers';
   info: {
@@ -800,10 +863,25 @@ export interface ApiPrueferPruefer extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    Vorname: Attribute.String & Attribute.Required;
-    Nachname: Attribute.String & Attribute.Required;
-    Titel: Attribute.String;
-    Verfuegbar: Attribute.Boolean & Attribute.Required;
+    vorname: Attribute.String & Attribute.Required;
+    nachname: Attribute.String & Attribute.Required;
+    titel: Attribute.String & Attribute.Required;
+    verfuegbar: Attribute.Boolean & Attribute.Required;
+    personalnummer: Attribute.Integer &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetMinMax<
+        {
+          min: 100000000;
+          max: 999999999;
+        },
+        number
+      >;
+    thesis: Attribute.Relation<
+      'api::pruefer.pruefer',
+      'manyToMany',
+      'api::thesis.thesis'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -834,14 +912,21 @@ export interface ApiStudentStudent extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    Vorname: Attribute.String & Attribute.Required;
-    Nachname: Attribute.String & Attribute.Required;
-    Matrikelnummer: Attribute.BigInteger &
+    vorname: Attribute.String & Attribute.Required;
+    nachname: Attribute.String & Attribute.Required;
+    matrikelnummer: Attribute.Integer &
       Attribute.Required &
-      Attribute.Unique;
-    Strasse: Attribute.String & Attribute.Required;
-    Mail: Attribute.Email & Attribute.Required;
-    Studiengang: Attribute.Enumeration<
+      Attribute.Unique &
+      Attribute.SetMinMax<
+        {
+          min: 1000000;
+          max: 9999999;
+        },
+        number
+      >;
+    strasse: Attribute.String & Attribute.Required;
+    email: Attribute.Email & Attribute.Required & Attribute.Unique;
+    studiengang: Attribute.Enumeration<
       [
         'Bahningenieurwesen',
         'Medieninformatik',
@@ -849,7 +934,7 @@ export interface ApiStudentStudent extends Schema.CollectionType {
         'Wirtschaftsmathematik'
       ]
     >;
-    PLZ: Attribute.Integer &
+    plz: Attribute.Integer &
       Attribute.Required &
       Attribute.SetMinMax<
         {
@@ -858,7 +943,13 @@ export interface ApiStudentStudent extends Schema.CollectionType {
         },
         number
       >;
-    User: Attribute.String & Attribute.Required & Attribute.Unique;
+    user: Attribute.String & Attribute.Required & Attribute.Unique;
+    thesis: Attribute.Relation<
+      'api::student.student',
+      'oneToMany',
+      'api::thesis.thesis'
+    >;
+    ort: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -889,20 +980,25 @@ export interface ApiThesisThesis extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    Studienabschluss: Attribute.Enumeration<['Bachelor', 'Master']> &
+    studienabschluss: Attribute.Enumeration<['Bachelor', 'Master']> &
       Attribute.Required;
-    Titel: Attribute.String & Attribute.Required;
-    Pruefer: Attribute.Relation<
+    titel: Attribute.String & Attribute.Required & Attribute.Unique;
+    startdatum: Attribute.Date & Attribute.Required;
+    beantragungsdatum: Attribute.Date & Attribute.Required;
+    zulassung: Attribute.Boolean;
+    extern: Attribute.Relation<
       'api::thesis.thesis',
-      'oneToMany',
+      'manyToOne',
+      'api::extern.extern'
+    >;
+    pruefer: Attribute.Relation<
+      'api::thesis.thesis',
+      'manyToMany',
       'api::pruefer.pruefer'
     >;
-    Startdatum: Attribute.Date & Attribute.Required;
-    Beantragungsdatum: Attribute.Date & Attribute.Required;
-    Zulassung: Attribute.Boolean;
-    Student: Attribute.Relation<
+    student: Attribute.Relation<
       'api::thesis.thesis',
-      'oneToOne',
+      'manyToOne',
       'api::student.student'
     >;
     createdAt: Attribute.DateTime;
@@ -941,6 +1037,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::extern.extern': ApiExternExtern;
       'api::pruefer.pruefer': ApiPrueferPruefer;
       'api::student.student': ApiStudentStudent;
       'api::thesis.thesis': ApiThesisThesis;

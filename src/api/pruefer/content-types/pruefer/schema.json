@@ -12,20 +12,34 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Vorname": {
+    "vorname": {
       "type": "string",
       "required": true
     },
-    "Nachname": {
+    "nachname": {
       "type": "string",
       "required": true
     },
-    "Titel": {
-      "type": "string"
+    "titel": {
+      "type": "string",
+      "required": true
     },
-    "Verfuegbar": {
+    "verfuegbar": {
       "type": "boolean",
       "required": true
+    },
+    "personalnummer": {
+      "type": "integer",
+      "required": true,
+      "max": 999999999,
+      "min": 100000000,
+      "unique": true
+    },
+    "thesis": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::thesis.thesis",
+      "inversedBy": "pruefer"
     }
   }
 }
