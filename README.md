@@ -1,3 +1,6 @@
+# Data to use Strapi with Camunda
+The file can be downloaded [here](https://drive.google.com/file/d/1QCp0E4U0ScMG8Al-GjcmK8aOOHhtpVOq/view?usp=drive_link)
+
 # 🚀 Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
